@@ -54,7 +54,7 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
     - Damit es nicht zu langweilig wird, soll beim Start entschieden werden, welche Lade-Stragie man verwenden möchte.
         - **Full-Refresh:** Alle Daten im Data Warehouse werden überschrieben und neu eingefügt.
         - **Incremental:** Nur neue Daten werden werden in das Data Warehouse geladen
-    - Wir wollen die Daten pro Stunde auswerten. Überlege dir also, wie du die Daten am besten in DuckDB schreiben musst.
+    - Schau dir den Response an und überlege dir, wie die Daten sinnvoll in DuckDB geschrieben werden müssen.
 
 3. **Steuerung des Python-Skripts:**
     - Folgende Parameter des API-Aufrufs sollten per Kommandozeile überschrieben werden können:
