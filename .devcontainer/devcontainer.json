@@ -1,0 +1,45 @@
+// Update the VARIANT arg in docker-compose.yml to pick a Python version: 3, 3.10, 3.9, 3.8, 3.7, 3.6, 3-bullseye, 3.10-bullseye, 3.9-bullseye, 3.8-bullseye, 3.7-bullseye, 3.6-bullseye, 3-buster, 3.10-buster, 3.9-buster, 3.8-buster, 3.7-buster, 3.6-buster
+{
+    "name": "sikwel",
+    "dockerComposeFile": ["./docker-compose.yml"],
+    "service": "sikwel-data-engineering-project-environment",
+    "workspaceFolder": "/home/vscode/workspace",
+    "settings": {
+        "terminal.integrated.defaultProfile.linux#": "/bin/bash",
+        "python.pythonPath": "/usr/local/bin/python",
+        "python.languageServer": "Pylance",
+        "files.associations": {
+            "*.sql": "jinja-sql"
+        },
+        // easier to see if there are unsaved changed
+        "workbench.editor.highlightModifiedTabs": true,
+        "workbench.editor.labelFormat": "medium",
+        // make a vertical line so I don't make lines too long
+        "editor.rulers": [
+            120
+        ],
+        "editor.renderWhitespace": "all",
+    },
+    "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "editorconfig.editorconfig",
+        "ms-azuretools.vscode-docker",
+        "visualstudioexptteam.vscodeintellicode",
+        "eamodio.gitlens",
+        "redhat.vscode-yaml",
+        "samuelcolvin.jinjahtml",
+        "charliermarsh.ruff",
+        "ms-python.black-formatter",
+        "cweijan.vscode-postgresql-client2"
+    ],
+    "initializeCommand": "",
+    "postCreateCommand": "",
+    "postStartCommand": "",
+    "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+version: "2"
+
+services:
+  sikwel-data-engineering-project-environment:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.sikwel-environment
+      args:
+        # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_UID: 1000
+        USER_GID: 1000
+
+    volumes:
+      - ..:/home/vscode/workspace:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Uncomment the next line to use a non-root user for all processes.
+    user: vscode
