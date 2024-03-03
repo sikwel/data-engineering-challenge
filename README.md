@@ -18,7 +18,7 @@ Falls du Windows nutzt, vergewissere dich, dass WSL2 installiert ist. Hier finde
 
 ### VSCode
 
-Als Entwicklungsumgebung nutzen wir einen vordefinierten Docker-Container. Hier haben wir dir schonmal ein paar hilfreiche Pakete vorinstalliert. Damit das läuft, benötigst du VSCode. Falls du bereits eine andere IDE hast die sich mit einem Docker-Container verbindet, auch gut!
+Als Entwicklungsumgebung nutzen wir einen vordefinierten Docker-Container. Hier haben wir dir schonmal ein paar hilfreiche Pakete vorinstalliert. Damit das läuft, benötigst du VSCode. Falls du bereits eine andere IDE hast, die sich mit einem Docker-Container verbindet, auch gut!
 
 ## Projekt-Setup
 
@@ -39,25 +39,23 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
 
 1. **Mit der Open-Meteo API das Wetter checken:**
     - Schnapp dir die [Wetterdaten](https://open-meteo.com/) mit der Open-Meteo API.
-    - Wir wollen uns historische Wetterdaten (auf Stundenbasis) für **Oldenburg** anschauen. Uns vor allem folgende Parameter:
+    - Wir wollen uns historische Wetterdaten (auf Stundenbasis) für **Oldenburg** anschauen. Uns interessieren vor allem folgende Parameter:
         - Temperature
         - Relative Humidity
         - Rain
         - Weather Code
         - Wind Speed
         - Surface Pressure
-    - Überlege dir ein geeigntes Loggin im Fehler- oder Erfolgsfall. Das hilft nicht nur beim Debugging sondern freut den Benutzer 👍
+    - Überlege dir ein geeigntes Logging im Fehler- oder Erfolgsfall. Das hilft nicht nur beim Debugging sondern freut den Benutzer 👍
     - Python und die Requests-Bibliothek machen's möglich
     - Zeige deine Skills im Umgang mit APIs und Datenextraktion.
 
 2. **Daten in DuckDB pumpen:**
     - Lade die Daten in ein lokales [DuckDB](https://duckdb.org/)
-    - Damit es nicht zu langweilig wird soll zur Laufzeit entschieden werden welche Lade-Stragie man verwenden möchte.
+    - Damit es nicht zu langweilig wird, soll beim Start entschieden werden, welche Lade-Stragie man verwenden möchte.
         - **Full-Refresh:** Alle Daten im Data Warehouse werden überschrieben und neu eingefügt.
         - **Incremental:** Nur neue Daten werden werden in das Data Warehouse geladen
-    - Wir wollen die Daten später pro Stunde auswerten können. Überlege dir also wie du diese auf Basis des Response
-    in DuckDB schreiben musst.
-    - Beweise deine Fähigkeiten in Python.
+    - Wir wollen die Daten später pro Stunde auswerten können. Überlege dir also, wie du diese auf Basis des Response in DuckDB schreiben musst.
 
 3. **Steuerung des Python-Skripts:**
     - Folgende Parameter des API-Aufrufs sollten per Kommandozeile überschrieben werden können:
@@ -66,17 +64,15 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
         - Start Date
         - End Date
         - Timezone
-    - Beweise deine Fähigkeit, flexible Tools zu erstellen.
 
 4. **Docker-Container:**
     - Packe deine Python-Anwendung in einen Docker-Container.
     - Am Ende wollen wir deine Anwendung im Docker-Container starten und die Parameter für den API übergeben. Nachdem die Daten verarbeitet wurden soll der Container wieder runterfahren. Die Ausgabe des Loggings sollten in der Konsole zu sehen sein.
-    - Zeige, dass du Docker meistern kannst.
 
 5. **...and beyond:**
     - Halt den Code clean und kommentiere klug.
     - Definiere Funktionen und Klassen wo sinnvoll.
-    - Nutze `git` um dein Projekt zu versionieren und am Ende wieder in das Repository zu pushen damit wir uns dein Ergebnis anschauen können.
+    - Nutze `git` um dein Projekt zu versionieren und am Ende wieder in das Repository zu pushen, damit wir uns dein Ergebnis anschauen können.
 
 ## Let's Code!
 
