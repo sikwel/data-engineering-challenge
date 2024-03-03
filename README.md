@@ -31,7 +31,7 @@ Als Entwicklungsumgebung nutzen wir einen vordefinierten Docker-Container. Hier 
 
 2. Öffne das Projekt in Visual Studio Code – der Devcontainer regelt!
 
-3. Falls etwas fehlt installiere es dir einfach per `pip` und füge es der `requirements.txt`hinzu.
+3. Falls etwas fehlt installiere es dir einfach per `pip`.
 
 ## Was wir machen
 
@@ -47,7 +47,6 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
         - Wind Speed
         - Surface Pressure
     - Überlege dir ein geeigntes Logging im Fehler- oder Erfolgsfall. Das hilft nicht nur beim Debugging sondern freut den Benutzer 👍
-    - Python und die Requests-Bibliothek machen's möglich
     - Zeige deine Skills im Umgang mit APIs und Datenextraktion.
 
 2. **Daten in DuckDB pumpen:**
@@ -55,7 +54,7 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
     - Damit es nicht zu langweilig wird, soll beim Start entschieden werden, welche Lade-Stragie man verwenden möchte.
         - **Full-Refresh:** Alle Daten im Data Warehouse werden überschrieben und neu eingefügt.
         - **Incremental:** Nur neue Daten werden werden in das Data Warehouse geladen
-    - Wir wollen die Daten später pro Stunde auswerten können. Überlege dir also, wie du diese auf Basis des Response in DuckDB schreiben musst.
+    - Wir wollen die Daten pro Stunde auswerten. Überlege dir also, wie du die Daten am besten in DuckDB schreiben musst.
 
 3. **Steuerung des Python-Skripts:**
     - Folgende Parameter des API-Aufrufs sollten per Kommandozeile überschrieben werden können:
