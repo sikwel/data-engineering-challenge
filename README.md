@@ -1,4 +1,4 @@
-# sikwel GmbH: Data Engineering Challenge 🚀
+# siːkwəl: Data Engineering Challenge 🚀
 
 Moin moin! Willkommen zum Data Engineering Trainee-Projekt – hier geht's um Docker, Python, Open-Meteo API und ein paar Daten! Lies dir die Anleitung sorgsam durch und starte direkt mit dem Projekt.
 
