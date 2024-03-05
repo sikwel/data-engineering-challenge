@@ -51,7 +51,7 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
 
 2. **Daten in DuckDB pumpen:**
     - Lade die Daten in ein lokales [DuckDB](https://duckdb.org/)
-    - Damit es nicht zu langweilig wird, soll beim Start entschieden werden, welche Lade-Stragie man verwenden möchte.
+    - Damit es nicht zu langweilig wird, soll beim Start entschieden werden, welche Lade-Strategie man verwenden möchte.
         - **Full-Refresh:** Alle Daten im Data Warehouse werden überschrieben und neu eingefügt.
         - **Incremental:** Nur neue Daten werden werden in das Data Warehouse geladen
     - Schau dir den Response an und überlege dir, wie die Daten sinnvoll in DuckDB geschrieben werden müssen.
@@ -66,7 +66,7 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
 
 4. **Docker-Container:**
     - Packe deine Python-Anwendung in einen Docker-Container.
-    - Am Ende wollen wir deine Anwendung im Docker-Container starten und die Parameter für den API übergeben. Nachdem die Daten verarbeitet wurden soll der Container wieder runterfahren. Die Ausgabe des Loggings sollten in der Konsole zu sehen sein.
+    - Am Ende wollen wir deine Anwendung im Docker-Container starten und die Parameter für den API Aufruf übergeben. Die Ausgabe des Loggings sollten in der Konsole zu sehen sein.
 
 5. **...and beyond:**
     - Halt den Code clean und kommentiere klug.
