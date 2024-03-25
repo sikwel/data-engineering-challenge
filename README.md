@@ -39,6 +39,7 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
 
 1. **Mit der Open-Meteo API das Wetter checken:**
     - Schnapp dir die [Wetterdaten](https://open-meteo.com/) mit der Open-Meteo API.
+    - Nutze Pythons `request` library
     - Wir wollen uns historische Wetterdaten (auf Stundenbasis) für **Oldenburg** anschauen. Uns interessieren vor allem folgende Parameter:
         - Temperature
         - Relative Humidity
