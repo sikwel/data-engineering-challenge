@@ -40,7 +40,7 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
 1. **Mit der Open-Meteo API das Wetter checken:**
     - Schnapp dir die [Wetterdaten](https://open-meteo.com/) mit der Open-Meteo API.
     - Nutze Pythons `request` library
-    - Wir wollen uns historische Wetterdaten (auf Stundenbasis) für **Regions** aus dem AdventureWorks Datenset anschauen. Falls es hier keine genauen Standorte gibt, wähle einfach einen Ort für aus der jeweiligen Region. (Bspw. United States / Northwest -> Salem). Uns interessieren vor allem folgende Parameter:
+    - Wir wollen uns historische Wetterdaten (auf Stundenbasis) für **Region** aus dem AdventureWorks Datenset anschauen. Falls es hier keine genauen Standorte gibt, wähle einfach einen Ort für aus der jeweiligen Region. (Bspw. United States / Northwest -> Salem). Uns interessieren vor allem folgende Parameter:
         - Temperature
         - Relative Humidity
         - Rain
