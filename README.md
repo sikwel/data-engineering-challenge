@@ -40,7 +40,7 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
 1. **Mit der Open-Meteo API das Wetter checken:**
     - Schnapp dir die [Wetterdaten](https://open-meteo.com/) mit der Open-Meteo API.
     - Nutze Pythons `request` library
-    - Wir wollen uns historische Wetterdaten (auf Stundenbasis) für **Oldenburg** anschauen. Uns interessieren vor allem folgende Parameter:
+    - Wir wollen uns historische Wetterdaten (auf Stundenbasis) für **Regions** aus dem AdventureWorks Datenset anschauen. Falls es hier keine genauen Standorte gibt, wähle einfach einen Ort für aus der jeweiligen Region. (Bspw. United States / Northwest -> Salem). Uns interessieren vor allem folgende Parameter:
         - Temperature
         - Relative Humidity
         - Rain
@@ -65,8 +65,14 @@ Unser Test-Projekt hat ein paar Aufgaben für dich vorgesehen:
         - End Date
         - Timezone
 
+4. **Modellierung der Daten mittels dbt:**
+ 
+    - Modelliere die Adventure Works- und Wetterdaten mithilfe des data build tools
+    - Orientiere dich hierbei an bekannten Datenmodellierungsansätzen und wähle den aus deiner Sicht besten Ansatz für die vorliegenden Daten
+    - Fokus der Modellierung soll auf der Analyse der Umsätze nach von dir ausgewählten Kriterien (die 3 wichtigsten reichen) und der Verbindung zwischen dem *Wetter* und *Verkaufszahlen* liegen
+
 4. **Docker-Container:**
-    - Packe deine Python-Anwendung in einen Docker-Container.
+    - Packe deine Implementierung in einen Docker-Container.
     - Am Ende wollen wir deine Anwendung im Docker-Container starten und die Parameter für den API Aufruf übergeben. Die Ausgabe des Loggings sollten in der Konsole zu sehen sein.
 
 5. **...and beyond:**
@@ -84,3 +90,4 @@ Viel Erfolg und vor allem viel Spaß beim Coden! Bei Fragen stehen wir dir zur V
 
 - [Open-Meteo Dokumentation](https://open-meteo.com/en/docs)
 - [DuckDB Dokumentation](https://duckdb.org/docs/sql/introduction)
+- [Adventure Works 2022 CSVs](https://www.kaggle.com/datasets/algorismus/adventure-works-in-excel-tables)
