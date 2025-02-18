@@ -1,6 +1,6 @@
 # siːkwəl: Data Engineering Challenge 🚀
 
-Moin moin! Willkommen zum Data Engineering Projekt – hier geht's um Docker, Python, Open-Meteo API und ein paar Daten! Lies dir die Anleitung sorgsam durch und starte direkt mit dem Projekt.
+Moin moin! Willkommen zum Data Engineering Projekt – hier geht's um Docker, Python, Open-Meteo API, dbt (data build tool) und ein paar Daten! Lies dir die Anleitung sorgsam durch und starte direkt mit dem Projekt.
 
 ## Was du brauchst
 
