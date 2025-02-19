@@ -36,3 +36,24 @@ models:
       +materialized: view
     core:
       +materialized: view
+
+
+seeds:
+  challenge_project:
+    +quote_columns: true
+    +delimiter: "\t"
+    +all_varchar: true
+
+    Product:
+      +column_types:
+        Standard Cost: varchar(32)
+
+    Sales:
+      +column_types:
+        Unit Price: varchar(32)
+        Sales: varchar(32)
+        Cost: varchar(32)
+
+    Targets:
+      +column_types:
+        Target: varchar(32)
