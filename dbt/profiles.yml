@@ -1,0 +1,7 @@
+challenge_project:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "M:\Code\sikwel_codingchallenge\data-engineering-challenge\duckdb\dev_db.duckdb"  # Hier wird die lokale DuckDB-Datei gespeichert
+      schema: main                        # Das Schema in DuckDB
