@@ -3,7 +3,7 @@ import pandas as pd
 import logging 
 import duckdb
 import argparse
-
+import geohash2 as gh
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -35,7 +35,7 @@ logging.info(f"Timezone: {args.tz}")
 
 
 # DISCUSSION
-# In my opinion, we should make sure the tuple (latitude, longitude, timezone, time) is unique
+# We should make sure the tuple (latitude, longitude, timezone, time) is unique
 # Of course we can test and clean this up later in dbt or so too, but I believe the cleaner the DB, the better
 # So I will do this using UNIQUE constraint and therefore I prescribe an explicit data schema here. 
 # This also allows us to INSERT OR REPLACE when using incremental loading.
@@ -45,6 +45,7 @@ logging.info(f"Timezone: {args.tz}")
 
 
 sql_create_table = f"""CREATE TABLE weather_data_hourly (
+    geohash TEXT,
     latitude DOUBLE,
     longitude DOUBLE,
     timezone TEXT,
@@ -56,7 +57,7 @@ sql_create_table = f"""CREATE TABLE weather_data_hourly (
     wind_speed DOUBLE,
     surface_pressure DOUBLE,
     data_time_stamp TIMESTAMP,
-    UNIQUE(latitude, longitude, timezone, time)
+    UNIQUE(geohash, timezone, time)
 )"""
 
 sql_drop_table = f"""DROP TABLE IF EXISTS weather_data_hourly;"""
@@ -113,13 +114,17 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
     ## Clean index
     df_out.reset_index(drop=True, inplace=True)
 
+    # Adding geohash
+    df_out["geohash"] = df_out.apply(lambda row: gh.encode(row['latitude'], row['longitude'], precision=4), axis=1)
+
     # Slice the wanted columns
-    cols_of_interest = ['latitude', 'longitude', 'timezone_abbreviation', "hourly.time"]+['hourly.' + s for s in requested_fields_hourly]
+    cols_of_interest = ['geohash', 'latitude', 'longitude', 'timezone_abbreviation', "hourly.time"]+['hourly.' + s for s in requested_fields_hourly]
     df_out = df_out[cols_of_interest]
 
     # Adding data timestamp for transparency
     df_out["data_time_stamp"] = pd.Timestamp.utcnow()
 
+    
     return df_out
 
 def main(db_conn_str = '../duckdb/dev_db.duckdb', load_type=args.load_type, lat = args.lat, long = args.long, start_date = args.start_date, end_date = args.end_date, tz=args.tz):
