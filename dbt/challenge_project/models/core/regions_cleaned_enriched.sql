@@ -12,11 +12,16 @@ c AS (
     SELECT
         "sales_territory_key",
         "latitude",
-        "longitude"
+        "longitude",
+        "geohash"
     FROM
         {{ref("region_coords_cleaned")}}
 )
 
-SELECT r.*, c."latitude" AS "region_latitude", c."longitude" AS "region_longitude" 
+SELECT 
+    r.*, 
+    c."latitude", 
+    c."longitude", 
+    c."geohash"
 FROM r
 LEFT JOIN c ON r."sales_territory_key" = c."sales_territory_key"

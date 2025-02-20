@@ -2,7 +2,7 @@
 -- names are already are fine
 -- let's explicitly load here, since we use SELECT * in the staging layer
 
-WITH t as (
+WITH m as (
     SELECT
         "geohash"
         ,"latitude"	
@@ -18,9 +18,18 @@ WITH t as (
         ,"data_time_stamp"
 
     FROM 
-        {{ ref("_meteo") }}
+        {{ ref("meteo_cleaned") }}
 
-    ORDER BY data_time_stamp DESC -- for fun ... and to see imidiately when last data injection has been made
+),
+
+r AS (
+    SELECT
+        "sales_territory_key",
+        "geohash"        
+    FROM 
+        {{ ref("regions_cleaned_enriched") }}
 )
 
-SELECT * FROM t
+SELECT m.*, r."sales_territory_key" 
+FROM m
+LEFT JOIN r ON r."geohash" = m."geohash"
