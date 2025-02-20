@@ -19,7 +19,7 @@ WITH t as (
     FROM 
         {{ ref("_meteo") }}
 
-    ORDER BY data_time_stamp DESC -- in order to do something in this layer and to see imidiately when last data injection has been made
+    ORDER BY data_time_stamp DESC -- for fun ... and to see imidiately when last data injection has been made
 )
 
 SELECT * FROM T

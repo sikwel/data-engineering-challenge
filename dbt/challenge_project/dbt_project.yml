@@ -57,3 +57,6 @@ seeds:
     Targets:
       +column_types:
         Target: varchar(32)
+
+    mapping_region_coords:
+      delimiter: " "
