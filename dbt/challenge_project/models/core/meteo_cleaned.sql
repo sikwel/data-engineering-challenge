@@ -8,7 +8,8 @@ WITH t as (
         ,"latitude"	
         ,"longitude"	
         ,"timezone"
-        ,"time"	
+        ,"time" as "date_time"
+        ,CAST("time" AS DATE) as "date"
         ,"temperature"	
         ,"relative_humidity"	
         ,"rain"	
@@ -21,6 +22,8 @@ WITH t as (
         {{ ref("_meteo") }}
 
     ORDER BY data_time_stamp DESC -- for fun ... and to see imidiately when last data injection has been made
+
+    # TODO: either filter away NANs here or do dbt test
 )
 
 SELECT * FROM t

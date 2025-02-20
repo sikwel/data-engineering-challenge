@@ -124,6 +124,9 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
     # Adding data timestamp for transparency
     df_out["data_time_stamp"] = pd.Timestamp.utcnow()
 
+    # TODO check if there is a json
+    # TODO check if all columns are there
+    # TODO check if data is meaningfull - warn
     
     return df_out
 
