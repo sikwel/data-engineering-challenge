@@ -80,7 +80,7 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
         "surface_pressure"
     ]
 
-    endpoint = r"https://api.open-meteo.com/v1/forecast"
+    endpoint = r"https://historical-forecast-api.open-meteo.com/v1/forecast"
     
     query_params = {
         "latitude": lat,
