@@ -1,7 +1,3 @@
--- dtypes are already enforced in DB
--- names are already are fine
--- let's explicitly load here, since we use SELECT * in the staging layer
-
 WITH t as (
     SELECT
         "geohash"
@@ -21,9 +17,19 @@ WITH t as (
     FROM 
         {{ ref("_meteo") }}
 
-    ORDER BY data_time_stamp DESC -- for fun ... and to see imidiately when last data injection has been made
+    WHERE 1=1
+    -- the sales-data time-frame seemts to exceeds availablity of historical weather data.
+    -- depending on usecase, i could see several ways to tackle this problem (check during ingestion, dbt test, or simple filter it here)
+    -- so lets only consider complete data sets
+    AND "temperature" IS NOT NULL
+    AND "relative_humidity" IS NOT NULL
+    AND "rain" IS NOT NULL
+    AND "weather_code" IS NOT NULL
+    AND "wind_speed" IS NOT NULL
+    AND "surface_pressure" IS NOT NULL
 
-    # TODO: either filter away NANs here or do dbt test
+    ORDER BY data_time_stamp DESC -- to see imidiately when last data injection has been made   
+
 )
 
 SELECT * FROM t
