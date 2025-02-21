@@ -177,6 +177,10 @@ def main(db_conn_str = '../duckdb/dev_db.duckdb', load_type=args.load_type, lat 
     )
     logging.info(f"Extraced {len(extracted_data)} rows of data")
 
+    num_rows_with_nulls = extracted_data.isnull().any(axis=1).sum()
+    if num_rows_with_nulls > 0:    
+        logging.warning(f"There are {num_rows_with_nulls} rows with at least one null value in the extracted data")
+    
     con = duckdb.connect(db_conn_str)
     logging.info("Established conn to DuckDB")
 
