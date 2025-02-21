@@ -7,12 +7,15 @@ models:
     columns:
       - name: "latitude"
         description: "Latitude of weather data"
-        data_tests:
+        tests:
           - not_null
-
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ["latitude", "longitude", "timezone", "time"]
-
   - name: "meteo_cleaned"
-    description: "Cleaning up meteo data. In this case, here is not much to do. We just do it to the semantic layer structured properly to show off :-)"
+    description: "Cleaned version of raw meteo data"
+    columns:
+      - name: "temperature"
+        description: "Temperature in Celsius"
+        tests:
+          - not_null
