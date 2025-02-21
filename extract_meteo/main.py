@@ -1,4 +1,6 @@
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 import pandas as pd
 import logging 
 import duckdb
@@ -15,23 +17,25 @@ logging.basicConfig(
 parser = argparse.ArgumentParser()
 parser.add_argument('--env', type=str, default='dev', help='Environment to work with')
 parser.add_argument('--load_type', type=str, default='incremental', help='Loading type of data')
-parser.add_argument('--lat', type=float, default = 34.31295, help='Latitude of weather data')
-parser.add_argument('--long', type=float, default = -78.16111,  help='Longitude of weather data')
-parser.add_argument('--start_date', type=str, default = '2025-01-01', help='Start date of selected data')
-parser.add_argument('--end_date', type=str, default = '2025-01-03', help='End date of selected data')
-parser.add_argument('--tz', type=str, default = 'UTC', help='Timezone of selected data')
+parser.add_argument('--lat', type=float, default=34.31295, help='Latitude of weather data')
+parser.add_argument('--long', type=float, default=-78.16111, help='Longitude of weather data')
+parser.add_argument('--start_date', type=str, default='2025-01-01', help='Start date of selected data')
+parser.add_argument('--end_date', type=str, default='2025-01-03', help='End date of selected data')
+parser.add_argument('--tz', type=str, default='UTC', help='Timezone of selected data')
 args = parser.parse_args()
 
-
 # Accessing the arguments
-logging.info(f"Using the following config for data extraction:")
-logging.info(f"Environment: {args.env}")
-logging.info(f"Load Type: {args.load_type}")
-logging.info(f"Latitude: {args.lat}")
-logging.info(f"Longitude: {args.long}")
-logging.info(f"Start Date: {args.start_date}")
-logging.info(f"End Date: {args.end_date}")
-logging.info(f"Timezone: {args.tz}")
+config = {
+    "Environment": args.env,
+    "Load Type": args.load_type,
+    "Latitude": args.lat,
+    "Longitude": args.long,
+    "Start Date": args.start_date,
+    "End Date": args.end_date,
+    "Timezone": args.tz
+}
+
+logging.info(f"Started data pipeline 'METEO_DATA'. Environment: {args.env}, Load Type: {args.load_type}")
 
 
 # DISCUSSION
@@ -90,11 +94,38 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
         "end_date": end_date,
         "timezone": tz
     }
-
-    # TODO try except 
-    response = requests.get(endpoint, query_params)
-    data = pd.json_normalize(response.json())
+    logging.info(f"Requesting data from {endpoint} with the following query params: {query_params}")
     
+    
+    
+
+    # i ran into problems, when extracting huge chunks of data, so we have to connect with the API a bit more sophisticated
+    session = requests.Session()
+    retry = Retry(
+        total=5,
+        backoff_factor=1,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET"]
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    response = session.get(endpoint, params=query_params)
+
+
+
+    if response.status_code != 200:
+        logging.error(f"Request failed with status code {response.status_code}")
+        raise ValueError("Request failed")
+    
+    else:
+        logging.info("Request successful")
+        data = pd.json_normalize(response.json())
+        if not isinstance(data, pd.DataFrame):
+            logging.error("Data is not a DataFrame")
+            raise ValueError("Data is not a DataFrame")
+        
 
     # Minor transformations
 
@@ -102,6 +133,7 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
     explode_list = ["hourly." + s for s in requested_fields_hourly]
     explode_list.append("hourly.time")
     df_out = data.explode(explode_list) 
+  
 
     # DISCUSSION ... 
     # I was considering to enforce some of the data types here in the py-workspace. 
@@ -130,6 +162,9 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
     
     return df_out
 
+
+
+# TODO: it depends where we run this, if it works or not!
 def main(db_conn_str = '../duckdb/dev_db.duckdb', load_type=args.load_type, lat = args.lat, long = args.long, start_date = args.start_date, end_date = args.end_date, tz=args.tz):
 
     # extract
@@ -140,7 +175,7 @@ def main(db_conn_str = '../duckdb/dev_db.duckdb', load_type=args.load_type, lat 
         end_date,
         tz
     )
-    logging.info("Extraced meteo data")
+    logging.info(f"Extraced {len(extracted_data)} rows of data")
 
     con = duckdb.connect(db_conn_str)
     logging.info("Established conn to DuckDB")
