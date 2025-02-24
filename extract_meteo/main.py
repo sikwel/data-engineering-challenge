@@ -165,7 +165,7 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
 
 
 # TODO: it depends where we run this, if it works or not!
-def main(db_conn_str = '../duckdb/dev_db.duckdb', load_type=args.load_type, lat = args.lat, long = args.long, start_date = args.start_date, end_date = args.end_date, tz=args.tz):
+def main(db_conn_str = 'duckdb/dev_db.duckdb', load_type=args.load_type, lat = args.lat, long = args.long, start_date = args.start_date, end_date = args.end_date, tz=args.tz):
 
     # extract
     extracted_data = get_meteo_data(
