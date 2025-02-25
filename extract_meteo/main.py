@@ -147,7 +147,7 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
     df_out.reset_index(drop=True, inplace=True)
 
     # Adding geohash
-    df_out["geohash"] = df_out.apply(lambda row: gh.encode(row['latitude'], row['longitude'], precision=4), axis=1)
+    df_out["geohash"] = df_out.apply(lambda row: gh.encode(row['latitude'], row['longitude'], precision=3), axis=1)
 
     # Slice the wanted columns
     cols_of_interest = ['geohash', 'latitude', 'longitude', 'timezone_abbreviation', "hourly.time"]+['hourly.' + s for s in requested_fields_hourly]

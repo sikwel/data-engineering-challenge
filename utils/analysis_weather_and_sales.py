@@ -33,6 +33,6 @@ sns.lmplot(
 
 # Average Sales per day related to the average rain?
 sns.lmplot(
-    data=df, x="temperature_avg", y="avg_sales_dollar"
+    data=df, x="rain_avg", y="avg_sales_dollar"
     ,col="sales_territory_key"
 )
