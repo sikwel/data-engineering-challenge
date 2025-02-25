@@ -7,6 +7,7 @@ import duckdb
 import argparse
 import geohash2 as gh
 
+# Loggin config
 logging.basicConfig(
     level=logging.INFO, 
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -24,30 +25,9 @@ parser.add_argument('--end_date', type=str, default='2025-01-03', help='End date
 parser.add_argument('--tz', type=str, default='UTC', help='Timezone of selected data')
 args = parser.parse_args()
 
-# Accessing the arguments
-config = {
-    "Environment": args.env,
-    "Load Type": args.load_type,
-    "Latitude": args.lat,
-    "Longitude": args.long,
-    "Start Date": args.start_date,
-    "End Date": args.end_date,
-    "Timezone": args.tz
-}
-
 logging.info(f"Started data pipeline 'METEO_DATA'. Environment: {args.env}, Load Type: {args.load_type}")
 
-
-# DISCUSSION
-# We should make sure the tuple (latitude, longitude, timezone, time) is unique
-# Of course we can test and clean this up later in dbt or so too, but I believe the cleaner the DB, the better
-# So I will do this using UNIQUE constraint and therefore I prescribe an explicit data schema here. 
-# This also allows us to INSERT OR REPLACE when using incremental loading.
-
-# Alternatively, we could also use a data-time-stamp and only take the latest / earliest entries, in case there are doubletes of (latitude, longitude, timezone, time)
-# lets stick with the schema approach now ....  "Explicit is better than implicit" (zen of py)
-
-
+# SQL statements
 sql_create_table = f"""CREATE TABLE weather_data_hourly (
     geohash TEXT,
     latitude DOUBLE,
@@ -68,12 +48,21 @@ sql_drop_table = f"""DROP TABLE IF EXISTS weather_data_hourly;"""
 
 sql_insert_values = f"""INSERT OR REPLACE INTO weather_data_hourly SELECT * FROM extracted_data"""
 
+# Extraction function
+def get_meteo_data(lat: float, long: float, start_date: str, end_date: str, tz: str = 'GMT+1'):
+    """
+    Fetches meteorological data from the Open-Meteo API.
 
-def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
+    Parameters:
+    lat (float): Latitude of the location.
+    long (float): Longitude of the location.
+    start_date (str): Start date for the data in YYYY-MM-DD format.
+    end_date (str): End date for the data in YYYY-MM-DD format.
+    tz (str): Timezone of the data. Default is 'GMT+1'.
 
-    # TODO assure proper inputs
-    # TODO docstring        
-
+    Returns:
+    pd.DataFrame: DataFrame containing the meteorological data.
+    """
     # see doc to select fields: https://open-meteo.com/en/docs
     requested_fields_hourly = [
         "temperature_2m",
@@ -95,9 +84,6 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
         "timezone": tz
     }
     logging.info(f"Requesting data from {endpoint} with the following query params: {query_params}")
-    
-    
-    
 
     # i ran into problems, when extracting huge chunks of data, so we have to connect with the API a bit more sophisticated
     session = requests.Session()
@@ -113,19 +99,15 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
 
     response = session.get(endpoint, params=query_params)
 
-
-
     if response.status_code != 200:
         logging.error(f"Request failed with status code {response.status_code}")
         raise ValueError("Request failed")
-    
     else:
         logging.info("Request successful")
         data = pd.json_normalize(response.json())
         if not isinstance(data, pd.DataFrame):
             logging.error("Data is not a DataFrame")
             raise ValueError("Data is not a DataFrame")
-        
 
     # Minor transformations
 
@@ -133,15 +115,6 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
     explode_list = ["hourly." + s for s in requested_fields_hourly]
     explode_list.append("hourly.time")
     df_out = data.explode(explode_list) 
-  
-
-    # DISCUSSION ... 
-    # I was considering to enforce some of the data types here in the py-workspace. 
-    # Why? For example, when throwing the data into DuckDB, some of the Dtypes already will get casted.
-    # So I cannot compare input and output df1.equals(df2)
-    # Also: In earlier work I had some trouble with timestamps as well ...
-    # In the end i decided to not enforce dtypes here, since we have an explicit schema in the CREATE TABLE statement already
-    
 
     ## Clean index
     df_out.reset_index(drop=True, inplace=True)
@@ -150,22 +123,40 @@ def get_meteo_data(lat, long, start_date, end_date, tz='GMT+1'):
     df_out["geohash"] = df_out.apply(lambda row: gh.encode(row['latitude'], row['longitude'], precision=3), axis=1)
 
     # Slice the wanted columns
-    cols_of_interest = ['geohash', 'latitude', 'longitude', 'timezone_abbreviation', "hourly.time"]+['hourly.' + s for s in requested_fields_hourly]
+    cols_of_interest = ['geohash', 'latitude', 'longitude', 'timezone_abbreviation', "hourly.time"] + ['hourly.' + s for s in requested_fields_hourly]
     df_out = df_out[cols_of_interest]
 
     # Adding data timestamp for transparency
     df_out["data_time_stamp"] = pd.Timestamp.utcnow()
 
-    # TODO check if there is a json
-    # TODO check if all columns are there
-    # TODO check if data is meaningfull - warn
-    
     return df_out
 
 
 
-# TODO: it depends where we run this, if it works or not!
-def main(db_conn_str = 'duckdb/dev_db.duckdb', load_type=args.load_type, lat = args.lat, long = args.long, start_date = args.start_date, end_date = args.end_date, tz=args.tz):
+def main(env=args.env, load_type=args.load_type, lat=args.lat, long=args.long, start_date=args.start_date, end_date=args.end_date, tz=args.tz):
+    """
+    Main function to extract meteorological data and load it into a DuckDB database.
+    Parameters:
+    env (str): The environment in which the script is running. Default is 'dev'.
+    load_type (str): The type of load operation to perform. Must be 'full' or 'incremental'.
+    lat (float): Latitude for the data extraction.
+    long (float): Longitude for the data extraction.
+    start_date (str): Start date for the data extraction in 'YYYY-MM-DD' format.
+    end_date (str): End date for the data extraction in 'YYYY-MM-DD' format.
+    tz (str): Timezone for the data extraction.
+    Raises:
+    NotImplementedError: If the environment is not 'dev' or if the load type is invalid.
+    Logs:
+    - Number of rows extracted.
+    - Number of rows with null values.
+    - Connection establishment to DuckDB.
+    - Table drop, creation, and data insertion operations.
+    - Connection closure to DuckDB.
+    """
+    if env == 'dev':
+        db_conn_str = 'duckdb/dev_db.duckdb'
+    else:
+        raise NotImplementedError("Only dev environment is supported")
 
     # extract
     extracted_data = get_meteo_data(
@@ -175,7 +166,7 @@ def main(db_conn_str = 'duckdb/dev_db.duckdb', load_type=args.load_type, lat = a
         end_date,
         tz
     )
-    logging.info(f"Extraced {len(extracted_data)} rows of data")
+    logging.info(f"Extracted {len(extracted_data)} rows of data")
 
     num_rows_with_nulls = extracted_data.isnull().any(axis=1).sum()
     if num_rows_with_nulls > 0:    
@@ -207,21 +198,3 @@ def main(db_conn_str = 'duckdb/dev_db.duckdb', load_type=args.load_type, lat = a
 
 if __name__ == '__main__':
     main() 
-
-
-# TESTING
-# con = duckdb.connect('../duckdb/dev_db.duckdb')
-# df = con.execute(f"SELECT * FROM weather_data_hourly").fetchdf()
-# con.close()
-
-
-# df = get_meteo_data(
-#     test_region["Latitude"],
-#     test_region["Longitude"],
-#     '2025-01-01',
-#     '2025-02-03',
-#     'GMT+1'
-# )
-
-# lookup regions
-# regions = pd.read_csv(r"M:\Code\sikwel_codingchallenge\data-engineering-challenge\data\aux_data\mapping_region_coords.csv", sep=" ")
