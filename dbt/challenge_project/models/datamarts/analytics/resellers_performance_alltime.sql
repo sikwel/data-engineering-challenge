@@ -1,10 +1,10 @@
 SELECT 
-    "product_key"
-    ,"product_name"
-    ,"product_standard_cost"
-    ,"product_color"
-    ,"product_subcategory"
-    ,"product_category"
+    "reseller_key"
+    ,"reseller_business_type"
+    ,"reseller_name"
+    ,"reseller_city"
+    ,"reseller_state_province"
+    ,"reseller_country"
     ,COUNT(DISTINCT "sales_order_number") AS "cnt_orders_total"
     ,SUM("quantity") AS "quantity_sum"
     ,AVG("quantity") AS "quantity_avg_order"
@@ -16,9 +16,9 @@ SELECT
 FROM 
     {{ref("sales_all")}}
 GROUP BY
-    "product_key"
-    ,"product_name"
-    ,"product_standard_cost"
-    ,"product_color"
-    ,"product_subcategory"
-    ,"product_category"
+    "reseller_key"
+    ,"reseller_business_type"
+    ,"reseller_name"
+    ,"reseller_city"
+    ,"reseller_state_province"
+    ,"reseller_country"

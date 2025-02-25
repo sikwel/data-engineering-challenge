@@ -19,3 +19,33 @@ models:
         description: "Temperature in Celsius"
         tests:
           - not_null
+
+  - name: "orders"
+    description: "One row represents one order"
+    columns:
+      - name: "sales_order_number"
+        tests:
+          - not_null
+          - unique
+
+  - name: "products_performance_alltime"
+    description: "One row represents one product and its performance"
+    columns:
+      - name: "product_key"
+        tests:
+          - not_null
+          - unique
+
+  - name: "resellers_performance_alltime"
+    description: "One row represents one reseller and its performance"
+    columns:
+      - name: "reseller_key"
+        tests:
+          - not_null
+          - unique
+
+  - name: "employee_target_performance_monthly"
+    description: "One row represents the performance of one employee in one month."
+
+  - name: "weather_and_sales"
+    description: "One row represents a region's weather and sales data for one day."

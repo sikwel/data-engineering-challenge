@@ -1,0 +1,9 @@
+SELECT
+    "reseller_key"
+    ,"reseller_business_type"
+    ,"reseller_name"
+    ,"reseller_city"
+    ,"reseller_state_province"
+    ,"reseller_country"
+FROM 
+    {{ref("resellers_cleaned")}}

@@ -15,24 +15,12 @@ df = con.query(sql_query_tab).df()
 
 # Number of orders related to the average temperature?
 sns.lmplot(
-    data=df, x="temperature_avg", y="cnt_orders"
+    data=df, x="temperature_avg", y="cnt_distinct_orders"
     ,col="sales_territory_key"
 )
 
 # Average Sales per day related to the average temperature?
 sns.lmplot(
     data=df, x="temperature_avg", y="avg_sales_dollar"
-    ,col="sales_territory_key"
-)
-
-# Number of orders related to the average rain?
-sns.lmplot(
-    data=df, x="rain_avg", y="cnt_orders"
-    ,col="sales_territory_key"
-)
-
-# Average Sales per day related to the average rain?
-sns.lmplot(
-    data=df, x="rain_avg", y="avg_sales_dollar"
     ,col="sales_territory_key"
 )

@@ -1,27 +1,27 @@
 WITH r AS (
     SELECT 
-        "SalesTerritoryKey" AS "sales_territory_key",
-        "Region" AS "region",
-        "Country" AS "country",
-        "Group" AS "group",
+        "SalesTerritoryKey" AS "sales_territory_key"
+        ,"Region" AS "region"
+        ,"Country" AS "country"
+        ,"Group" AS "group"
     FROM 
         {{ ref("_regions") }}
 ),
 
 c AS (
     SELECT
-        "sales_territory_key",
-        "latitude",
-        "longitude",
-        "geohash"
+        "sales_territory_key"
+        ,"latitude"
+        ,"longitude"
+        ,"geohash"
     FROM
         {{ref("region_coords_cleaned")}}
 )
 
 SELECT 
-    r.*, 
-    c."latitude", 
-    c."longitude", 
-    c."geohash"
+    r.*
+    ,c."latitude"
+    ,c."longitude"
+    ,c."geohash"
 FROM r
 LEFT JOIN c ON r."sales_territory_key" = c."sales_territory_key"

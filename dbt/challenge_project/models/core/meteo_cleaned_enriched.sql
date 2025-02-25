@@ -1,7 +1,3 @@
--- dtypes are already enforced in DB
--- names are already are fine
--- let's explicitly load here, since we use SELECT * in the staging layer
-
 WITH m as (
     SELECT
         "geohash"
@@ -25,8 +21,8 @@ WITH m as (
 
 r AS (
     SELECT
-        "sales_territory_key",
-        "geohash"        
+        "sales_territory_key"
+        ,"geohash"        
     FROM 
         {{ ref("regions_cleaned_enriched") }}
 )

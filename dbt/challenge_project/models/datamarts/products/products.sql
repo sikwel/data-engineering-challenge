@@ -1,6 +1,6 @@
 SELECT
     "product_key"
-    ,"product"
+    ,"product_name"
     ,"standard_cost"
     ,"color"
     ,"subcategory"
