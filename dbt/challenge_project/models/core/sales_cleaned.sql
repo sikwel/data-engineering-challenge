@@ -1,6 +1,7 @@
 SELECT
     "SalesOrderNumber" AS "sales_order_number",
-    strptime("OrderDate", '%A, %B %d, %Y') AS "order_date",
+    STRPTIME("OrderDate", '%A, %B %d, %Y') AS "order_date",
+    STRFTIME("order_date", '%Y-%m') AS "order_date_year_month",
     "ProductKey" AS "product_key",
     "ResellerKey" AS "reseller_key",
     "EmployeeKey" AS "employee_key",
