@@ -1,0 +1,11 @@
+SELECT
+    "product_key"
+    ,"product"
+    ,"standard_cost"
+    ,"color"
+    ,"subcategory"
+    ,"category"
+    ,"background_color_format"
+    ,"font_color_format"
+FROM
+    {{ref("products_cleaned")}}
