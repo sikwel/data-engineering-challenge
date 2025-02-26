@@ -18,9 +18,9 @@ WITH t as (
         {{ ref("_meteo") }}
 
     WHERE 1=1
-    -- the sales-data time-frame seemts to exceeds availablity of historical weather data.
+    -- the sales-data time-frame seemts to exceeds availablity of historical weather data, so NULL values exist
     -- depending on usecase, i could see several ways to tackle this problem (check during ingestion, dbt test, or simple filter it here)
-    -- so lets only consider complete data sets
+    -- lets only consider complete data sets!
     AND "temperature" IS NOT NULL
     AND "relative_humidity" IS NOT NULL
     AND "rain" IS NOT NULL
