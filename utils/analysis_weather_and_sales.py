@@ -20,7 +20,8 @@ sns.lmplot(
 )
 
 # Average Sales per day related to the average temperature?
-sns.lmplot(
+p = sns.lmplot(
     data=df, x="temperature_avg", y="avg_sales_dollar"
     ,col="sales_territory_key"
 )
+p.savefig('avg_sales_dollar_vs_temperature_avg.png', dpi=200)
