@@ -18,8 +18,8 @@ Aus dem dbt Projekt Folder ... falls es Probleme mit den Profiles gibt, direkt d
 
 - `dbt deps` Dependencies laden
 - `dbt seed --profiles-dir ./.dbt` Seeds laufen lassen, ggf. `--full-refresh`
-- `dbt seed --profiles-dir ./.dbt` Models laufen lassen
-- `dbt seed --profiles-dir ./.dbt` for safety ;-)
+- `dbt run --profiles-dir ./.dbt` Models laufen lassen
+- `dbt test --profiles-dir ./.dbt` for safety ;-)
 
 ## Insights
 Wer dann Bock auf Business Insights hat, kann sich die Models `datamarts.analytics.*` angucken, bpsw:
