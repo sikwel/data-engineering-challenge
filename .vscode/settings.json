@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "DuckDB",
+            "name": "skiwel_dev",
+            "database": "${workspaceFolder:data-engineering-challenge}/duckdb/dev_db.duckdb"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

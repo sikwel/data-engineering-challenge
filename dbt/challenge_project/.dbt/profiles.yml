@@ -1,0 +1,8 @@
+challenge_project:
+  outputs:
+    dev:
+      type: duckdb
+      path: "../../duckdb/dev_db.duckdb"
+      threads: 1
+
+  target: dev
